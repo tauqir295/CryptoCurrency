@@ -10,13 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.example.crypto.Constants
-import com.example.crypto.DetailFragment
+import com.example.crypto.util.Constants
+import com.example.crypto.detail.DetailFragment
 import com.example.crypto.R
 import com.example.crypto.databinding.FragmentMainBinding
 import com.example.crypto.landing.adapter.CurrencyAdapter
 import com.example.crypto.model.Currency
-import com.example.crypto.replaceWithNextFragment
+import com.example.crypto.util.replaceWithNextFragment
 import com.example.network.Status
 import dagger.hilt.android.AndroidEntryPoint
 
