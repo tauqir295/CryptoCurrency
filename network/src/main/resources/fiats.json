@@ -1,0 +1,16 @@
+{
+  "fiats": [
+    {
+      "id": "1",
+      "name": "Euro",
+      "symbol": "EUR",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/fiat/usd.svg"
+    },
+    {
+      "id": "2",
+      "name": "Swiss Franc",
+      "symbol": "CHF",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/fiat/chf.svg"
+    }
+  ]
+}

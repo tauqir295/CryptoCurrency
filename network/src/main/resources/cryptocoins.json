@@ -1,0 +1,25 @@
+{
+  "cryptocoins": [
+    {
+      "id": "1",
+      "name": "Bitcoin",
+      "price": 9000,
+      "symbol": "XRP",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/cryptocoin/btc.svg"
+    },
+    {
+      "id": "2",
+      "name": "Bitpanda Ecosystem Token",
+      "price": 0.03,
+      "symbol": "BEST",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/cryptocoin/best.svg"
+    },
+    {
+      "id": "3",
+      "name": "Ripple",
+      "price": 0.2119,
+      "symbol": "XRP",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/cryptocoin/xrp.svg"
+    }
+  ]
+}

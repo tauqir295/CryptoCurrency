@@ -1,0 +1,18 @@
+{
+  "metals": [
+    {
+      "id": "4",
+      "name": "Gold",
+      "price": 45.14,
+      "symbol": "XAU",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/cryptocoin/xau.svg"
+    },
+    {
+      "id": "5",
+      "name": "Palladium",
+      "price": 70.40,
+      "symbol": "XPD",
+      "logo": "https://bitpanda-assets.s3-eu-west-1.amazonaws.com/static/cryptocoin/xrp.svg"
+    }
+  ]
+}

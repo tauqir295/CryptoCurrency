@@ -1,0 +1,28 @@
+{
+  "dummyMetalWalletList": [
+    {
+      "id": "1",
+      "name": "Gold Wallet 1",
+      "balance": 133.729,
+      "isDefault": true,
+      "metalId": "9",
+      "deleted": false
+    },
+    {
+      "id": "2",
+      "name": "Gold Wallet 2",
+      "balance": 2043.4340,
+      "isDefault": false,
+      "metalId": "4",
+      "deleted": false
+    },
+    {
+      "id": "2",
+      "name": "Test Palladium Wallet",
+      "balance": 200.0,
+      "isDefault": false,
+      "metalId": "5",
+      "deleted": false
+    }
+  ]
+}
