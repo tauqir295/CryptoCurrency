@@ -1,4 +1,4 @@
-package com.example.crypto
+package com.example.crypto.landing
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -139,9 +139,9 @@ class MainFragmentViewModel @Inject constructor(
         cryptocoin: Cryptocoin,
         cryptoWallet: CryptoWallet?
     ): Double {
-        cryptoWallet?.dummyCryptoWalletList?.forEach { dummyCryptoWallet ->
-            if (cryptocoin.id == dummyCryptoWallet.id)
-                return dummyCryptoWallet.balance
+        cryptoWallet?.dummyCryptoWalletList?.forEach { wallet ->
+            if (cryptocoin.id == wallet.id && !wallet.deleted)
+                return wallet.balance
         }
 
         return 0.0
@@ -151,9 +151,9 @@ class MainFragmentViewModel @Inject constructor(
         metal: Metal,
         metalWallet: MetalWallet?
     ): Double {
-        metalWallet?.dummyMetalWalletList?.forEach { dummyMetalWallet ->
-            if (metal.id == dummyMetalWallet.id)
-                return dummyMetalWallet.balance
+        metalWallet?.dummyMetalWalletList?.forEach { wallet ->
+            if (metal.id == wallet.id && !wallet.deleted)
+                return wallet.balance
         }
 
         return 0.0
@@ -164,7 +164,7 @@ class MainFragmentViewModel @Inject constructor(
         fiatWallets: FiatWallets?
     ): Double {
         fiatWallets?.dummyFiatWallet?.forEach { wallet ->
-            if (fiat.id == wallet.id)
+            if (fiat.id == wallet.id && !wallet.deleted)
                 return wallet.balance
         }
 
