@@ -17,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.internal.filterList
 import javax.inject.Inject
 import kotlin.random.Random.Default.nextInt
 
@@ -36,13 +35,6 @@ class MainFragmentViewModel @Inject constructor(
 
     private var currencyList = ArrayList<Currency>()
     private var filteredCurrencyList = ArrayList<Currency>()
-
-    private val cryptoCoinMutableLiveData = MutableLiveData<Cryptocoins?>()
-    private val cryptoWalletMutableLiveData = MutableLiveData<CryptoWallet?>()
-    private val metalWalletMutableLiveData = MutableLiveData<MetalWallet?>()
-    private val metalsMutableLiveData = MutableLiveData<Metals?>()
-    private val fiatWalletMutableLiveData = MutableLiveData<FiatWallets?>()
-    private val fiatMutableLiveData = MutableLiveData<Fiats?>()
 
     init {
         fetchDataFromAPI()
@@ -65,15 +57,6 @@ class MainFragmentViewModel @Inject constructor(
                   metal: Metals?,
                   fiatWallets: FiatWallets?,
                   fiats: Fiats? ->
-
-                    cryptoCoinMutableLiveData.postValue(cryptocoins)
-                    cryptoWalletMutableLiveData.postValue(cryptoWallet)
-
-                    metalWalletMutableLiveData.postValue(metalWallet)
-                    metalsMutableLiveData.postValue(metal)
-
-                    fiatWalletMutableLiveData.postValue(fiatWallets)
-                    fiatMutableLiveData.postValue(fiats)
 
                     filterCurrencies(
                         cryptocoins,
