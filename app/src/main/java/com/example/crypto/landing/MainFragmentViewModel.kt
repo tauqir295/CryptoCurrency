@@ -17,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.internal.filterList
 import javax.inject.Inject
 import kotlin.random.Random.Default.nextInt
 
@@ -33,7 +34,8 @@ class MainFragmentViewModel @Inject constructor(
     val currencies: LiveData<Resource<ArrayList<Currency>>>
         get() = _currencyList
 
-    private val currencyList = ArrayList<Currency>()
+    private var currencyList = ArrayList<Currency>()
+    private var filteredCurrencyList = ArrayList<Currency>()
 
     private val cryptoCoinMutableLiveData = MutableLiveData<Cryptocoins?>()
     private val cryptoWalletMutableLiveData = MutableLiveData<CryptoWallet?>()
@@ -162,35 +164,48 @@ class MainFragmentViewModel @Inject constructor(
             }
         }
 
-        _currencyList.postValue(Resource.success(currencyList))
+        updateCurrencies()
     }
 
+    /**
+     * sort currencies based on balance and type i.e. fiat, metal and CryptoCoin.
+     */
     fun sortCurrencies() {
         val filterList = arrayOf("type", "balance")
         val randomPosition = nextInt(filterList.size)
 
-        val sorted = if (filterList[randomPosition] == "type") {
-            currencyList.sortedWith(compareBy { it.type })
+        val sortedCurrencies = if (filterList[randomPosition] == "type") {
+            filteredCurrencyList.sortedWith(compareBy { it.type })
         } else {
-            currencyList.sortedWith(compareBy { it.balance })
+            filteredCurrencyList.sortedWith(compareBy { it.balance })
         }
 
         val sortedList = ArrayList<Currency>()
-        sorted.forEach { currency ->
+        sortedCurrencies.forEach { currency ->
             sortedList.add(currency)
         }
         _currencyList.postValue(Resource.success(sortedList))
     }
 
+    /**
+     * Filter currencies based on type
+     */
     fun filterCurrencies() {
         val filterList = arrayOf("Fiat", "CryptoCoin", "Metal")
         val randomPosition = nextInt(filterList.size)
 
-        val sortedList = currencyList.filter {
+        filteredCurrencyList = currencyList.filter {
             it.type in setOf(filterList[randomPosition])
         } as ArrayList<Currency>
 
-        _currencyList.postValue(Resource.success(sortedList))
+        _currencyList.postValue(Resource.success(filteredCurrencyList))
     }
 
+    /**
+     * update the currency to api version
+     */
+    fun updateCurrencies() {
+        filteredCurrencyList = currencyList
+        _currencyList.postValue(Resource.success(filteredCurrencyList))
+    }
 }

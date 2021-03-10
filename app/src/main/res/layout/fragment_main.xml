@@ -4,9 +4,6 @@
 
     <data>
         <variable
-            name="fragment"
-            type="com.example.crypto.landing.MainFragment" />
-        <variable
             name="viewModel"
             type="com.example.crypto.landing.MainFragmentViewModel" />
     </data>
@@ -29,6 +26,20 @@
                 android:onClick="@{() -> viewModel.sortCurrencies()}"
                 app:drawableEndCompat="@drawable/ic_sort"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawablePadding="@dimen/dimens_8dp"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.updateCurrencies()}"
+                android:text="@string/reset"
+                app:drawableEndCompat="@drawable/ic_clear"
+                app:layout_constraintEnd_toStartOf="@+id/textViewFilter"
+                app:layout_constraintStart_toEndOf="@+id/textViewSort"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

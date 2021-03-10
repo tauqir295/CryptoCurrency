@@ -48,8 +48,6 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
 
             binding.viewModel = this@MainFragment.viewModel
 
-            binding.fragment = this@MainFragment
-
             // Specify the current fragment as the lifecycle owner of the binding.
             // This is necessary so that the binding can observe updates.
             lifecycleOwner = this@MainFragment
@@ -79,7 +77,7 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
     }
 
     private fun setUpObserver() {
-        viewModel.currencies.observe(viewLifecycleOwner, Observer {
+        viewModel.currencies.observe(viewLifecycleOwner, {
             when (it.status) {
 
                 Status.SUCCESS -> {
