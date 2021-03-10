@@ -46,6 +46,10 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
             currencyRv.adapter = adapter
             adapter.setOnItemClickListener(this@MainFragment)
 
+            binding.viewModel = this@MainFragment.viewModel
+
+            binding.fragment = this@MainFragment
+
             // Specify the current fragment as the lifecycle owner of the binding.
             // This is necessary so that the binding can observe updates.
             lifecycleOwner = this@MainFragment
@@ -82,6 +86,7 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
                     binding.progressBar.visibility = View.GONE
                     it.data?.let { currencyList ->
                         if (currencyList.isNotEmpty()) {
+                            binding.currencyRv.itemAnimator = null
                             adapter.updateList(currencyList)
                         } else {
                             Toast.makeText(requireContext(), getString(R.string.no_data_found), Toast.LENGTH_SHORT).show()

@@ -5,5 +5,7 @@
     <string name="ok">OK</string>
     <string name="no_data_found">No data found</string>
     <string name="detail">Detail screen</string>
+    <string name="sort">Sort</string>
+    <string name="filter">Filter</string>
 
 </resources>

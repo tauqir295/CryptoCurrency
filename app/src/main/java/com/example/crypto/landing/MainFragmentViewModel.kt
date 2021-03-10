@@ -6,13 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.example.crypto.model.Currency
 import com.example.network.NetworkStatusHelper
 import com.example.network.Resource
-import com.example.network.model.cryptocoins.Cryptocoin
 import com.example.network.model.cryptocoins.Cryptocoins
 import com.example.network.model.cryptowallet.CryptoWallet
 import com.example.network.model.eurwallet.FiatWallets
-import com.example.network.model.fiats.Fiat
 import com.example.network.model.fiats.Fiats
-import com.example.network.model.metals.Metal
 import com.example.network.model.metals.Metals
 import com.example.network.model.metalwallet.MetalWallet
 import com.example.network.repository.NetworkRepository
@@ -21,6 +18,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
+import kotlin.random.Random.Default.nextInt
 
 /**
  * View model class used for updating the UI
@@ -34,6 +32,15 @@ class MainFragmentViewModel @Inject constructor(
     private val _currencyList = MutableLiveData<Resource<ArrayList<Currency>>>()
     val currencies: LiveData<Resource<ArrayList<Currency>>>
         get() = _currencyList
+
+    private val currencyList = ArrayList<Currency>()
+
+    private val cryptoCoinMutableLiveData = MutableLiveData<Cryptocoins?>()
+    private val cryptoWalletMutableLiveData = MutableLiveData<CryptoWallet?>()
+    private val metalWalletMutableLiveData = MutableLiveData<MetalWallet?>()
+    private val metalsMutableLiveData = MutableLiveData<Metals?>()
+    private val fiatWalletMutableLiveData = MutableLiveData<FiatWallets?>()
+    private val fiatMutableLiveData = MutableLiveData<Fiats?>()
 
     init {
         fetchDataFromAPI()
@@ -56,6 +63,15 @@ class MainFragmentViewModel @Inject constructor(
                   metal: Metals?,
                   fiatWallets: FiatWallets?,
                   fiats: Fiats? ->
+
+                    cryptoCoinMutableLiveData.postValue(cryptocoins)
+                    cryptoWalletMutableLiveData.postValue(cryptoWallet)
+
+                    metalWalletMutableLiveData.postValue(metalWallet)
+                    metalsMutableLiveData.postValue(metal)
+
+                    fiatWalletMutableLiveData.postValue(fiatWallets)
+                    fiatMutableLiveData.postValue(fiats)
 
                     filterCurrencies(
                         cryptocoins,
@@ -86,89 +102,95 @@ class MainFragmentViewModel @Inject constructor(
         fiatWallets: FiatWallets?,
         fiats: Fiats?
     ) {
-        val currencyList = ArrayList<Currency>()
+        currencyList.clear()
+
         cryptocoins?.cryptocoins?.forEachIndexed { _, cryptocoin ->
             cryptocoin.run {
-                currencyList.add(
-                    Currency(
-                        name = name,
-                        balance = getCryptoWalletBalance(cryptocoin, cryptoWallet),
-                        icon = logo,
-                        symbol = symbol,
-                        type = "CryptoCoin",
-                        price = price
-                    )
-                )
+                cryptoWallet?.dummyCryptoWalletList?.forEach { wallet ->
+                    if (cryptocoin.id == wallet.cryptocoinId && !wallet.deleted) {
+                        currencyList.add(
+                            Currency(
+                                name = name,
+                                balance = wallet.balance,
+                                icon = logo,
+                                symbol = symbol,
+                                type = "CryptoCoin",
+                                price = price
+                            )
+                        )
+                    }
+                }
+
             }
         }
 
         metals?.metals?.forEachIndexed { _, metal ->
             metal.run {
-                currencyList.add(
-                    Currency(
-                        name = name,
-                        balance = getMetalWalletBalance(metal, metalWallet),
-                        icon = logo,
-                        symbol = symbol,
-                        type = "Metal",
-                        price = price
-                    )
-                )
+                metalWallet?.dummyMetalWalletList?.forEach { wallet ->
+                    if (metal.id == wallet.metalId && !wallet.deleted) {
+                        currencyList.add(
+                            Currency(
+                                name = name,
+                                balance = wallet.balance,
+                                icon = logo,
+                                symbol = symbol,
+                                type = "Metal",
+                                price = price
+                            )
+                        )
+                    }
+                }
             }
         }
 
         fiats?.fiats?.forEachIndexed { _, fiat ->
             fiat.run {
-                currencyList.add(
-                    Currency(
-                        name = name,
-                        balance = getFiatWalletBalance(fiat, fiatWallets),
-                        icon = logo,
-                        symbol = symbol,
-                        type = "Fiat",
-                        price = 0.0
-                    )
-                )
+                fiatWallets?.dummyFiatWallet?.forEach { wallet ->
+                    if (fiat.id == wallet.fiatId && !wallet.deleted) {
+                        currencyList.add(
+                            Currency(
+                                name = name,
+                                balance = wallet.balance,
+                                icon = logo,
+                                symbol = symbol,
+                                type = "Fiat",
+                                price = 0.0
+                            )
+                        )
+                    }
+                }
             }
         }
 
         _currencyList.postValue(Resource.success(currencyList))
     }
 
-    private fun getCryptoWalletBalance(
-        cryptocoin: Cryptocoin,
-        cryptoWallet: CryptoWallet?
-    ): Double {
-        cryptoWallet?.dummyCryptoWalletList?.forEach { wallet ->
-            if (cryptocoin.id == wallet.id && !wallet.deleted)
-                return wallet.balance
+    fun sortCurrencies() {
+        val filterList = arrayOf("type", "balance")
+        val randomPosition = nextInt(filterList.size)
+
+        val sorted = if (filterList[randomPosition] == "type") {
+            currencyList.sortedWith(compareBy { it.type })
+        } else {
+            currencyList.sortedWith(compareBy { it.balance })
         }
 
-        return 0.0
+        val sortedList = ArrayList<Currency>()
+        sorted.forEach { currency ->
+            sortedList.add(currency)
+        }
+        _currencyList.postValue(Resource.success(sortedList))
     }
 
-    private fun getMetalWalletBalance(
-        metal: Metal,
-        metalWallet: MetalWallet?
-    ): Double {
-        metalWallet?.dummyMetalWalletList?.forEach { wallet ->
-            if (metal.id == wallet.id && !wallet.deleted)
-                return wallet.balance
-        }
+    fun filterCurrencies() {
+        val filterList = arrayOf("Fiat", "CryptoCoin", "Metal")
+        val randomPosition = nextInt(filterList.size)
 
-        return 0.0
-    }
+        val sortedList = currencyList.filter {
+            it.type in setOf(filterList[randomPosition])
+        } as ArrayList<Currency>
 
-    private fun getFiatWalletBalance(
-        fiat: Fiat,
-        fiatWallets: FiatWallets?
-    ): Double {
-        fiatWallets?.dummyFiatWallet?.forEach { wallet ->
-            if (fiat.id == wallet.id && !wallet.deleted)
-                return wallet.balance
-        }
-
-        return 0.0
+        _currencyList.postValue(Resource.success(sortedList))
     }
 
 }

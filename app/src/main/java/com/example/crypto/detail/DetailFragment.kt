@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.crypto.util.Constants.CURRENCY
+import androidx.fragment.app.viewModels
 import com.example.crypto.R
 import com.example.crypto.databinding.FragmentDetailBinding
 import com.example.crypto.model.Currency
+import com.example.crypto.util.Constants.CURRENCY
 
 /**
  * A simple [Fragment] subclass.
@@ -18,12 +19,16 @@ import com.example.crypto.model.Currency
  * create an instance of this fragment.
  */
 class DetailFragment : Fragment() {
+
     private var currency: Currency? = null
     private lateinit var binding: FragmentDetailBinding
+    private val viewModel: DetailViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            currency = it.getParcelable(CURRENCY)
+
+            viewModel.currency = it.getParcelable(CURRENCY)
         }
     }
 
@@ -34,7 +39,7 @@ class DetailFragment : Fragment() {
 
         binding = FragmentDetailBinding.inflate(inflater, container, false)
 
-        binding.currency = currency
+        binding.currency = viewModel.currency
 
         // Inflate the layout for this fragment
         return binding.root
