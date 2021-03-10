@@ -191,4 +191,11 @@ class MainFragmentViewModel @Inject constructor(
         filteredCurrencyList = currencyList
         _currencyList.postValue(Resource.success(filteredCurrencyList))
     }
+
+    /**
+     * clear data in view model
+     */
+    fun clearViewModelData() {
+        _currencyList.value = null
+    }
 }
