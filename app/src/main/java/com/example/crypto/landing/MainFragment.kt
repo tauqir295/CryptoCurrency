@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -71,8 +72,12 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         //disable the home back button
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(false)
+                title = getString(R.string.currency_wallet_list)
+            }
+        }
         setUpObserver()
     }
 

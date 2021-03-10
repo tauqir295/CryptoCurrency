@@ -8,5 +8,6 @@
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
     <string name="reset">Reset</string>
+    <string name="currency_wallet_list">Currency wallet list</string>
 
 </resources>
