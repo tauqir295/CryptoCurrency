@@ -10,6 +10,9 @@ data class Currency (
     val balance: Double = 0.0,
     val name: String,
     val type: String,
+    val isMetal: Boolean = false,
+    val isCryptoCurrency: Boolean = false,
+    val isFiat: Boolean = false,
     val price: Double,
     val wallets: ArrayList<CurrencyWallet>? = null
 ) : Parcelable

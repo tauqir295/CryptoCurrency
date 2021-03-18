@@ -100,7 +100,8 @@ class MainFragmentViewModel @Inject constructor(
                                 icon = logo,
                                 symbol = symbol,
                                 type = "CryptoCoin",
-                                price = price
+                                price = price,
+                                isCryptoCurrency = true
                             )
                         )
                     }
@@ -120,7 +121,8 @@ class MainFragmentViewModel @Inject constructor(
                                 icon = logo,
                                 symbol = symbol,
                                 type = "Metal",
-                                price = price
+                                price = price,
+                                isMetal = true
                             )
                         )
                     }
@@ -139,7 +141,8 @@ class MainFragmentViewModel @Inject constructor(
                                 icon = logo,
                                 symbol = symbol,
                                 type = "Fiat",
-                                price = 0.0
+                                price = 0.0,
+                                isFiat = true
                             )
                         )
                     }
