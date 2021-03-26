@@ -10,6 +10,10 @@ import androidx.fragment.app.viewModels
 import com.example.crypto.R
 import com.example.crypto.databinding.FragmentDetailBinding
 import com.example.crypto.util.Constants.CURRENCY
+import com.github.mikephil.charting.charts.CandleStickChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
+
 
 /**
  * A simple [Fragment] subclass.
@@ -36,7 +40,7 @@ class DetailFragment : Fragment() {
 
         binding = FragmentDetailBinding.inflate(inflater, container, false)
 
-        binding.currency = viewModel.currency
+        binding.viewModel = viewModel
 
         // Inflate the layout for this fragment
         return binding.root
@@ -50,6 +54,29 @@ class DetailFragment : Fragment() {
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 title = getString(R.string.detail)
+            }
+
+            // source is https://steemit.com/utopian-io/@andrixyz/how-to-implement-candle-stick-chart-like-trading-stocks-or-cryptocurrency
+            findViewById<CandleStickChart>(R.id.candleStickChart).apply {
+
+                setDrawBorders(true)
+                description = Description().apply {
+                    text = viewModel.currency?.name
+                }
+
+                axisLeft.run {
+                    setDrawLabels(false)
+                    setDrawGridLines(false)
+                }
+                axisRight.setDrawGridLines(false)
+
+                xAxis.run {
+                    setDrawGridLines(false) // disable x axis grid lines
+                    position = XAxis.XAxisPosition.BOTTOM
+
+                }
+                data = viewModel.candleData
+                invalidate()
             }
         }
     }
