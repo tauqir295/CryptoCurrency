@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.crypto.R
 import com.example.crypto.databinding.FragmentDetailBinding
-import com.example.crypto.model.Currency
 import com.example.crypto.util.Constants.CURRENCY
 
 /**
@@ -20,7 +18,6 @@ import com.example.crypto.util.Constants.CURRENCY
  */
 class DetailFragment : Fragment() {
 
-    private var currency: Currency? = null
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModels()
 
@@ -54,8 +51,6 @@ class DetailFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
                 title = getString(R.string.detail)
             }
-
-            findViewById<TextView>(R.id.tvDetail).text = currency?.price.toString()
         }
     }
 

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimens_16dp"
             android:layout_marginTop="@dimen/dimens_16dp"
-            android:text="@{currency.name +` price: ` + currency.price + ` Euro`}"
+            android:text="@{currency.name +` price: ` + String.format(`%.2f`, currency.price)  + ` Euro`}"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

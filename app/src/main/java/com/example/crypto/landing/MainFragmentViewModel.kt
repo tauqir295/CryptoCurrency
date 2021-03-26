@@ -25,8 +25,8 @@ import kotlin.random.Random.Default.nextInt
  */
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor(
-    private val repository: NetworkRepository,
-    private val networkHelper: NetworkStatusHelper
+        private val repository: NetworkRepository,
+        private val networkHelper: NetworkStatusHelper
 ) : ViewModel() {
 
     private val _currencyList = MutableLiveData<Resource<ArrayList<Currency>>>()
@@ -45,64 +45,64 @@ class MainFragmentViewModel @Inject constructor(
         if (networkHelper.isNetworkConnected()) {
 
             Observable.zip(
-                repository.getCryptoCoins(),
-                repository.getCryptoWallet(),
-                repository.getMetalWallet(),
-                repository.getMetals(),
-                repository.getFiatWallet(),
-                repository.getFiats(),
-                { cryptocoins: Cryptocoins?,
-                  cryptoWallet: CryptoWallet?,
-                  metalWallet: MetalWallet?,
-                  metal: Metals?,
-                  fiatWallets: FiatWallets?,
-                  fiats: Fiats? ->
+                    repository.getCryptoCoins(),
+                    repository.getCryptoWallet(),
+                    repository.getMetalWallet(),
+                    repository.getMetals(),
+                    repository.getFiatWallet(),
+                    repository.getFiats(),
+                    { cryptoCoins: Cryptocoins?,
+                      cryptoWallet: CryptoWallet?,
+                      metalWallet: MetalWallet?,
+                      metal: Metals?,
+                      fiatWallets: FiatWallets?,
+                      fiats: Fiats? ->
 
-                    filterCurrencies(
-                        cryptocoins,
-                        cryptoWallet,
-                        metalWallet,
-                        metal,
-                        fiatWallets,
-                        fiats
-                    )
+                        filterCurrencies(
+                                cryptoCoins,
+                                cryptoWallet,
+                                metalWallet,
+                                metal,
+                                fiatWallets,
+                                fiats
+                        )
 
-                }
+                    }
             )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn {
-                    _currencyList.postValue(Resource.error("No internet connection", null))
-                }
-                .subscribe()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn {
+                        _currencyList.postValue(Resource.error("No internet connection", null))
+                    }
+                    .subscribe()
         }
 
     }
 
     private fun filterCurrencies(
-        cryptocoins: Cryptocoins?,
-        cryptoWallet: CryptoWallet?,
-        metalWallet: MetalWallet?,
-        metals: Metals?,
-        fiatWallets: FiatWallets?,
-        fiats: Fiats?
+            cryptoCoins: Cryptocoins?,
+            cryptoWallet: CryptoWallet?,
+            metalWallet: MetalWallet?,
+            metals: Metals?,
+            fiatWallets: FiatWallets?,
+            fiats: Fiats?
     ) {
         currencyList.clear()
 
-        cryptocoins?.cryptocoins?.forEachIndexed { _, cryptocoin ->
-            cryptocoin.run {
+        cryptoCoins?.cryptocoins?.forEach { cryptoCoin ->
+            cryptoCoin.run {
                 cryptoWallet?.dummyCryptoWalletList?.forEach { wallet ->
-                    if (cryptocoin.id == wallet.cryptocoinId && !wallet.deleted) {
+                    if (cryptoCoin.id == wallet.cryptocoinId && !wallet.deleted) {
                         currencyList.add(
-                            Currency(
-                                name = name,
-                                balance = wallet.balance,
-                                icon = logo,
-                                symbol = symbol,
-                                type = "CryptoCoin",
-                                price = price,
-                                isCryptoCurrency = true
-                            )
+                                Currency(
+                                        name = name,
+                                        balance = wallet.balance,
+                                        icon = logo,
+                                        symbol = symbol,
+                                        type = "CryptoCoin",
+                                        price = price,
+                                        isCryptoCurrency = true
+                                )
                         )
                     }
                 }
@@ -110,40 +110,40 @@ class MainFragmentViewModel @Inject constructor(
             }
         }
 
-        metals?.metals?.forEachIndexed { _, metal ->
+        metals?.metals?.forEach { metal ->
             metal.run {
                 metalWallet?.dummyMetalWalletList?.forEach { wallet ->
                     if (metal.id == wallet.metalId && !wallet.deleted) {
                         currencyList.add(
-                            Currency(
-                                name = name,
-                                balance = wallet.balance,
-                                icon = logo,
-                                symbol = symbol,
-                                type = "Metal",
-                                price = price,
-                                isMetal = true
-                            )
+                                Currency(
+                                        name = name,
+                                        balance = wallet.balance,
+                                        icon = logo,
+                                        symbol = symbol,
+                                        type = "Metal",
+                                        price = price,
+                                        isMetal = true
+                                )
                         )
                     }
                 }
             }
         }
 
-        fiats?.fiats?.forEachIndexed { _, fiat ->
+        fiats?.fiats?.forEach { fiat ->
             fiat.run {
                 fiatWallets?.dummyFiatWallet?.forEach { wallet ->
                     if (fiat.id == wallet.fiatId && !wallet.deleted) {
                         currencyList.add(
-                            Currency(
-                                name = name,
-                                balance = wallet.balance,
-                                icon = logo,
-                                symbol = symbol,
-                                type = "Fiat",
-                                price = 0.0,
-                                isFiat = true
-                            )
+                                Currency(
+                                        name = name,
+                                        balance = wallet.balance,
+                                        icon = logo,
+                                        symbol = symbol,
+                                        type = "Fiat",
+                                        price = 0.0,
+                                        isFiat = true
+                                )
                         )
                     }
                 }
@@ -154,23 +154,16 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     /**
-     * sort currencies based on balance and type i.e. fiat, metal and CryptoCoin.
+     * sort currencies based on type i.e. metals, cryptoCurrencies, fiats and balance.
+     * in order to keep fiat first, the sorting parameter [isFiat] is kept at 3rd position in compareBy operators
+     * to keep any parameter on top, set boolean parameter from 3 to 1 (i.e. in reverse order) inside compareBy operators
+     * and then balance follows 4th position of operator used.
      */
     fun sortCurrencies() {
-        val filterList = arrayOf("type", "balance")
-        val randomPosition = nextInt(filterList.size)
 
-        val sortedCurrencies = if (filterList[randomPosition] == "type") {
-            filteredCurrencyList.sortedWith(compareBy { it.type })
-        } else {
-            filteredCurrencyList.sortedWith(compareBy { it.balance })
-        }
+        val sortedCurrencies = filteredCurrencyList.sortedWith(compareBy({ it.isMetal }, { it.isCryptoCurrency }, {it.isFiat}, {it.balance}))
 
-        val sortedList = ArrayList<Currency>()
-        sortedCurrencies.forEach { currency ->
-            sortedList.add(currency)
-        }
-        _currencyList.postValue(Resource.success(sortedList))
+        _currencyList.postValue(Resource.success(sortedCurrencies.toList() as ArrayList<Currency>))
     }
 
     /**
