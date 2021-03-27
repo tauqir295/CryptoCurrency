@@ -9,13 +9,13 @@
             type="com.example.crypto.detail.DetailViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimens_16dp"
             android:elevation="1dp"
             android:padding="@dimen/dimens_16dp">
@@ -67,5 +67,5 @@
                 app:layout_constraintTop_toBottomOf="@id/candleStickChart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </layout>
