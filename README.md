@@ -15,9 +15,11 @@
 7. UI and unit test cases.
 8. Screen rotation data persists
 9. Generic error handling
+10. Network layer is created following clean architecture.
+11. Added build variant option for different entities. 
 
 #Enhancement
-1. Can add configuration structure. 
+1. Can add configuration structure using build variant flavours. 
 2. Can pass base url from host app via configuration. 
 3. Use security protocols for network calls.
 4. Bug fixes and ui changes can be scope for future changes.
