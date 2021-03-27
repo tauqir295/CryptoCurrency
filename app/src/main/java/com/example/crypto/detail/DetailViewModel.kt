@@ -17,6 +17,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(): ViewModel() {
     var currency: Currency? = null
 
+    // show historical chart using candle stick
+    // this is for demo purpose only
     private val marketSize = 10
     private val entries = mutableListOf<CandleEntry>()
     var candleData: CandleData = CandleData()

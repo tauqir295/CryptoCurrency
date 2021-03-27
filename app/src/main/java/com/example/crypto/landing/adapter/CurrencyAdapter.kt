@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crypto.databinding.CurrencyListItemBinding
 import com.example.crypto.model.Currency
 
+/**
+ * Adapter class for showing list of currencies.
+ */
 class CurrencyAdapter: RecyclerView.Adapter<CurrencyAdapter.AdapterViewHolder>() {
     private var mOnItemClickListener: OnRecyclerItemClickListener? = null
 

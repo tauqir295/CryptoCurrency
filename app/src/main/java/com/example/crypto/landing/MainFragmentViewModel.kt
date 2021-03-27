@@ -40,6 +40,9 @@ class MainFragmentViewModel @Inject constructor(
         fetchDataFromAPI()
     }
 
+    /**
+     *  fetch the data from server
+     */
     fun fetchDataFromAPI() {
         _currencyList.postValue(Resource.loading(null))
         if (networkHelper.isNetworkConnected()) {
@@ -79,6 +82,9 @@ class MainFragmentViewModel @Inject constructor(
 
     }
 
+    /**
+     * filter the data from server based on currency and their wallet
+     */
     private fun filterCurrencies(
             cryptoCoins: Cryptocoins?,
             cryptoWallet: CryptoWallet?,

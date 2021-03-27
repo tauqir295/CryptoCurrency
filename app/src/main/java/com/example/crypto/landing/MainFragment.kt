@@ -79,6 +79,9 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
         setUpObserver()
     }
 
+    /**
+     * check value change on viewModel.currencies live data
+     */
     private fun setUpObserver() {
         viewModel.currencies.observe(viewLifecycleOwner, {
             when (it.status) {
