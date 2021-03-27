@@ -36,7 +36,7 @@ class MainFragmentViewModelTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    lateinit var mainFragmentViewModel: MainFragmentViewModel
+    private lateinit var mainFragmentViewModel: MainFragmentViewModel
 
     @Mock
     private lateinit var networkHelper: NetworkStatusHelper

@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.example.crypto.util.Constants
-import com.example.crypto.detail.DetailFragment
 import com.example.crypto.R
 import com.example.crypto.databinding.FragmentMainBinding
+import com.example.crypto.detail.DetailFragment
 import com.example.crypto.landing.adapter.CurrencyAdapter
 import com.example.crypto.model.Currency
+import com.example.crypto.util.Constants
+import com.example.crypto.util.handleAPIFail
 import com.example.crypto.util.replaceWithNextFragment
 import com.example.network.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,7 +92,7 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
                         } else {
                             Toast.makeText(requireContext(), getString(R.string.no_data_found), Toast.LENGTH_SHORT).show()
                         }
-                    }?: handleAPIFail() // if no data found then show generic error message
+                    }?: handleAPIFail(requireActivity() as AppCompatActivity) // if no data found then show generic error message
                 }
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -103,24 +101,10 @@ class MainFragment : Fragment(), CurrencyAdapter.OnRecyclerItemClickListener {
                 Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
 
-                    handleAPIFail()
+                    handleAPIFail(requireActivity() as AppCompatActivity)
                 }
             }
         })
-    }
-
-    /**
-     * handing API failed case by showing alert dialog
-     */
-    private fun handleAPIFail() {
-        AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.api_failed))
-                .setMessage(getString(R.string.something_went_wrong))
-                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setCancelable(false)
-                .show()
     }
 
     override fun onItemClick(item: View, currency: Currency) {

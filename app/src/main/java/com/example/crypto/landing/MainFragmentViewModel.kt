@@ -155,7 +155,7 @@ class MainFragmentViewModel @Inject constructor(
 
     /**
      * Sort currencies based on type i.e. metals, cryptoCurrencies, fiats and balance.
-     * In order to keep fiat first, the sorting parameter [isFiat] is kept at 3rd position in compareBy operators.
+     * In order to keep fiat first, the sorting parameter isFiat is kept at 3rd position in compareBy operators.
      * To keep any parameter on top, set boolean parameter from 3 to 1 (i.e. in reverse order) inside compareBy operators
      * and then balance follows 4th position of operator used.
      */

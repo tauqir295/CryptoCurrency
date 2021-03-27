@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">SampleApp</string>
     <string name="api_failed">API Failed</string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="ok">OK</string>

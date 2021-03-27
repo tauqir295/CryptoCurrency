@@ -4,7 +4,7 @@
 
     <application
         android:name=".BaseApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="${APP_ICON}"
         android:label="${APP_NAME}"
         android:supportsRtl="true"
